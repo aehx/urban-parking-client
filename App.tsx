@@ -1,20 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { AuthProvider } from "./context/AuthContext";
+import { Provider } from "react-redux";
+import { persistor, store } from "./redux/store";
+import AppNav from "./navigation/AppNav";
+import { PersistGate } from "redux-persist/integration/react";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AuthProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <AppNav />
+        </PersistGate>
+      </Provider>
+    </AuthProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
