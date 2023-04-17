@@ -1,10 +1,8 @@
 import {
   View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
   ImageBackground,
 } from "react-native";
+import {styles} from "../style/screen/SettingScreen"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React, { useContext } from "react";
 import SettingsButton from "../components/SettingsButton";
@@ -18,15 +16,14 @@ const SettingScreen = ({ navigation }) => {
       source={require("../assets/background.jpg")}
       style={styles.container}
     >
-      <View style={{ paddingLeft: 40, paddingBottom: "60%" }}>
+      <View style={styles.favoriteContainer}>
         <SettingsButton
           label="Favoris"
           icon={
             <Ionicons
               name="heart-outline"
               size={22}
-              color="#ddd"
-              style={{ marginRight: 10 }}
+              style={styles.icon}
             />
           }
           action={() => {
@@ -39,8 +36,7 @@ const SettingScreen = ({ navigation }) => {
             <Ionicons
               name="person-outline"
               size={22}
-              color="#ddd"
-              style={{ marginRight: 10 }}
+              style={styles.icon}
             />
           }
           action={() => {
@@ -53,8 +49,7 @@ const SettingScreen = ({ navigation }) => {
             <Icon
               name="theme-light-dark"
               size={22}
-              color="#ddd"
-              style={{ marginRight: 10 }}
+              style={styles.icon}
             />
           }
           action={() => {}}
@@ -67,8 +62,7 @@ const SettingScreen = ({ navigation }) => {
             <Icon
               name="logout"
               size={22}
-              color="#ddd"
-              style={{ marginRight: 10 }}
+              style={styles.icon}
             />
           }
           action={() => {
@@ -79,11 +73,5 @@ const SettingScreen = ({ navigation }) => {
     </ImageBackground>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#0B131D",
-    justifyContent: "flex-end",
-  },
-});
+
 export default SettingScreen;

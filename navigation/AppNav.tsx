@@ -14,7 +14,9 @@ const AppNav = () => {
   useEffect(() => {
     axios
       .get("https://urban-parking-server.vercel.app/parking")
-      .then((d) => dispatch(addParkings(d.data)));
+      .then((response) => {
+        const filtered = response.data.filter((parking)=> parking.parkId !== "1951")
+        dispatch(addParkings(filtered))});
   }, []);
   if (isLoading) {
     return (

@@ -10,6 +10,7 @@ const initialState = {
   popUpParking: null,
   parkingList: null,
   parkingSelected: null,
+  favoritesParking:[]
 };
 
 export const parkingSlice = createSlice({
@@ -28,6 +29,9 @@ export const parkingSlice = createSlice({
     addParkingSelected: (state: RootState, action: PayloadAction<x>) => {
       state.value.parkingSelected = action.payload;
     },
+    addFavoritesParking: (state: RootState, action: PayloadAction<x>) => {
+      state.value.favoritesParking = action.payload;
+    },
   },
 });
 
@@ -36,5 +40,6 @@ export const {
   addPopUpParking,
   addParkingList,
   addParkingSelected,
+  addFavoritesParking
 } = parkingSlice.actions;
 export default parkingSlice.reducer;

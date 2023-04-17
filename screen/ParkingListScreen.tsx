@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import { View, SafeAreaView, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import {styles} from "../style/screen/ParkingListScreen"
 import React from "react";
 import ParkingListCard from "../components/ParkingListCard";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -38,22 +39,6 @@ const ParkingListScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#0B131D",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  test: {
-    backgroundColor: "#000",
-    width: "100%",
-  },
-  header: {
-    width: "100%",
-    paddingLeft: 10,
-    paddingTop: 10,
-  },
-});
+
 
 export default ParkingListScreen;

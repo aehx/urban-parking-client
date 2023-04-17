@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: userContextProviderType) => {
       let userInfo = {
         username: result.data.username,
         favorites: result.data.favorites,
+        email:result.data.email
       };
       setUserToken(token);
       setUserInfo(userInfo);
@@ -48,6 +49,7 @@ export const AuthProvider = ({ children }: userContextProviderType) => {
       let userInfo = {
         username: result.data.username,
         favorites: result.data.favorites,
+        email: result.data.email
       };
       setUserToken(token);
       setUserInfo(userInfo);
@@ -68,7 +70,6 @@ export const AuthProvider = ({ children }: userContextProviderType) => {
         headers: { "authorization": "Bearer " + userToken },
       }
     );
-    console.log("------AUTH",result.data)
     setUserToken(null);
     AsyncStorage.removeItem("token");
     AsyncStorage.removeItem("userInfo");

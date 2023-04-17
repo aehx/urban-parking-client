@@ -2,21 +2,36 @@ import {
   View,
   Text,
   SafeAreaView,
-  StyleSheet,
   TouchableOpacity,
   Linking,
 } from "react-native";
+import {styles} from "../style/screen/ParkingInformationScreen"
 import { useSelector, useDispatch } from "react-redux";
-import React from "react";
+import React, { useContext } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { addParkingSelected } from "../redux/reducers/parking";
+import { addFavoritesParking } from "../redux/reducers/parking";
 import MapView, { Marker } from "react-native-maps";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { pinStyle } from "../utils/mapview.utils";
+import { AuthContext } from "../context/AuthContext";
+import { parking } from "../axios.config";
 
 const ParkingInformationScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { parkingSelected } = useSelector((state) => state.parking.value);
+  const {parkings} = useSelector((state)=> state.parking.value)
+  const {userToken,userInfo} = useContext(AuthContext);
+  const { parkingSelected,favoritesParking } = useSelector((state) => state.parking.value);
+  const userFavorites = favoritesParking.length > 0 ? favoritesParking.filter((el)=>el.name === parkingSelected.name ):[];
+  const updateFavorite = async () => {
+    const response = await parking.put("/favorites",{ token: userToken,parkingName:parkingSelected.name },
+    {
+      headers: { "authorization": "Bearer " + userToken },
+    });
+    const axiosResult = await parking.get(`userFavorites/${userInfo.email}`);
+    const favoriteParking = parkings.filter((parking)=>  axiosResult.data.some((el)=>el === parking.name));
+    dispatch(addFavoritesParking(favoriteParking));
+}
+console.log(userFavorites)
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -25,13 +40,13 @@ const ParkingInformationScreen = ({ navigation }) => {
           color="#ddd"
           size={30}
           onPress={() => {
-            dispatch(addParkingSelected(null)), navigation.goBack();
+            navigation.goBack();
           }}
         />
       </View>
       <Text style={[styles.text, styles.title]}>{parkingSelected.name}</Text>
       <MapView
-        style={{ height: "30%", width: "80%", borderRadius: 10 }}
+        style={styles.map}
         provider="google"
         region={{
           latitude: parkingSelected.latitude,
@@ -74,64 +89,22 @@ const ParkingInformationScreen = ({ navigation }) => {
           <Icon
             name="directions"
             size={55}
-            color="#ddd"
-            style={{ color: "#2795FF", marginBottom: 10 }}
+            style={styles.iconFav_Heart}
           />
           <Text style={styles.text}>Y aller</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.icon} onPress={() => {}}>
+        <TouchableOpacity style={styles.icon} onPress={()=>updateFavorite()}>
           <Icon
-            name="heart-plus"
+            name={ userFavorites.length === 0 ? "heart-plus" : "heart-minus"}
             size={50}
-            color="#ddd"
-            style={{ color: "#2795FF", marginBottom: 10 }}
-          />
-          <Text style={styles.text}>Ajouter</Text>
+            style={styles.iconFav_Heart}
+          /> 
+           <Text style={styles.text}>{userFavorites.length === 0 ? "Ajouter" : "Retirer"}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#0B131D",
-  },
-  title: {
-    fontSize: 23,
-    marginBottom: 30,
-    marginTop: 20,
-  },
-  test: {
-    backgroundColor: "#000",
-    width: "100%",
-  },
-  header: {
-    width: "100%",
-    paddingLeft: 10,
-    paddingTop: 10,
-  },
-  text: {
-    color: "#ddd",
-    fontSize: 17,
-  },
-  icon: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  iconContainer: {
-    marginTop: 60,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    width: "80%",
-  },
-  textContainer: {
-    width: "80%",
-    marginTop: 30,
-  },
-});
 
 export default ParkingInformationScreen;

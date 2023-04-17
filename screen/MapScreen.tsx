@@ -1,12 +1,12 @@
 import {
   SafeAreaView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import React, { useState } from "react";
+import {styles} from "../style/screen/MapScreen"
 import { useDispatch, useSelector } from "react-redux";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -37,20 +37,7 @@ export default function MapScreen({ navigation }) {
         userPosition={userPosition}
       />
       <View
-        style={{
-          flexDirection: "row",
-          borderRadius: 20,
-          backgroundColor: "#0000009f",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "80%",
-          paddingBottom: 8,
-          paddingLeft: 8,
-          paddingTop: 8,
-          marginBottom: 25,
-          position: "absolute",
-          top: "10%",
-        }}
+        style={styles.inputContainer}
       >
         <MaterialIcons
           name="search"
@@ -63,12 +50,7 @@ export default function MapScreen({ navigation }) {
           placeholder={"Chercher un parking"}
           placeholderTextColor={"#ddd"}
           keyboardType={"default"}
-          style={{
-            flex: 1,
-            paddingVertical: 0,
-            color: "#fff",
-            fontSize: 20,
-          }}
+          style={styles.input}
           onChangeText={(text) => setSearchInputValue(text)}
           value={searchInputValue}
         />
@@ -121,41 +103,3 @@ export default function MapScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#0B131D",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  map: {
-    width: "100%",
-    height: "100%",
-  },
-  button: {
-    position: "absolute",
-    bottom: "22%",
-    backgroundColor: "#0B131Dee",
-    borderRadius: 25,
-    paddingHorizontal: 20,
-    paddingVertical: 7,
-    left: 25,
-  },
-  text: {
-    fontSize: 15,
-    color: "#ddd",
-  },
-  buttonInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    position: "absolute",
-    width: "40%",
-    bottom: "22%",
-    right: 30,
-    alignItems: "center",
-    backgroundColor: "#0B131Dee",
-    borderRadius: 25,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-  },
-});

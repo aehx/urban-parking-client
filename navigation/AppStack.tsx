@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MapScreen from "../screen/MapScreen";
 import SettingStack from "./SettingStack";
-
 import FavoriteScreen from "../screen/FavoriteScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ParkingListScreen from "../screen/ParkingListScreen";
@@ -19,6 +18,20 @@ const HomeStack = () => {
     >
       <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="ParkingList" component={ParkingListScreen} />
+      <Stack.Screen
+        name="ParkingInformation"
+        component={ParkingInformationScreen}
+      />
+    </Stack.Navigator>
+  );
+};
+const FavoriteStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="Favorites"
+    >
+      <Stack.Screen name="Favorites" component={FavoriteScreen} />
       <Stack.Screen
         name="ParkingInformation"
         component={ParkingInformationScreen}
@@ -49,7 +62,7 @@ const AppStack = () => {
       />
       <Tab.Screen
         name="favorites"
-        component={FavoriteScreen}
+        component={FavoriteStack}
         options={() => ({
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="heart-outline" color={color} size={size} />

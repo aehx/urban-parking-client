@@ -6,3 +6,10 @@ export const auth = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+export const parking = axios.create({
+  baseURL: "https://urban-parking-server.vercel.app/parking",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});

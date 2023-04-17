@@ -1,4 +1,5 @@
 import { View, Text } from "react-native";
+import {styles} from "../style/screen/ProfilScreen"
 import React from "react";
 
 const ProfilScreen = () => {
