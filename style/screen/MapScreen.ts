@@ -37,24 +37,27 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 5,
   },
-  inputContainer:{
+  inputContainer: {
     flexDirection: "row",
-          borderRadius: 20,
-          backgroundColor: "#0000009f",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "80%",
-          paddingBottom: 8,
-          paddingLeft: 8,
-          paddingTop: 8,
-          marginBottom: 25,
-          position: "absolute",
-          top: "10%",
+    borderRadius: 20,
+    backgroundColor: "#0000009f",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "80%",
+    paddingBottom: 8,
+    paddingLeft: 8,
+    paddingTop: 8,
+    marginBottom: 25,
+    position: "absolute",
+    top: "10%",
   },
-  input:{
+  input: {
     flex: 1,
     paddingVertical: 0,
     color: "#fff",
     fontSize: 20,
-  }
-})
+  },
+  textBold: {
+    fontWeight: "bold",
+  },
+});

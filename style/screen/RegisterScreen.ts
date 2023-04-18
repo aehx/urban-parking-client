@@ -44,4 +44,12 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 20,
   },
-})
+  errorContainer:{
+    width:"100%",
+    alignItems: "center",
+  },
+  error:{
+    color: "#913",
+    fontWeight:"bold",
+  }
+});

@@ -1,18 +1,14 @@
-import {
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import {styles} from "../style/screen/RegisterScreen"
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import InputField from "../components/inputField";
+import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { AuthContext } from "../context/AuthContext";
+import { styles } from "../style/screen/RegisterScreen";
+import InputField from "../components/inputField";
+import { RegisterScreenProps } from "../typescript/navigation/navigation.types";
 
-export default function RegisterScreen({ navigation }) {
-  const { signup } = useContext(AuthContext);
+export default function RegisterScreen({ navigation }: RegisterScreenProps) {
+  const { signup,registerError } = useContext(AuthContext);
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -22,7 +18,7 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Urban Parking</Text>
+      <Text style={styles.title}>Urban Parkings</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.loginText}>Inscription</Text>
         <InputField
@@ -89,6 +85,7 @@ export default function RegisterScreen({ navigation }) {
           }}
           value={user.confirmPassword}
         />
+        {registerError ? <View style={styles.errorContainer}><Text style={styles.error}>{registerError}</Text></View>:null}
       </View>
       <View style={styles.submitContainer}>
         <TouchableOpacity
@@ -107,4 +104,3 @@ export default function RegisterScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-

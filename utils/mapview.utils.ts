@@ -1,6 +1,11 @@
+import { Position } from "../typescript/components/MapView.type";
+import {
+  Parking,
+  PopUpParkingType,
+} from "../typescript/parkingType/parking.type";
 import { distanceBetween } from "./distance.utils";
 
-export const pinStyle = (places) => {
+export const pinStyle = (places: number) => {
   const pinColor = (() => {
     switch (true) {
       case places > 30:
@@ -9,15 +14,17 @@ export const pinStyle = (places) => {
         return "orange";
       case places === 0:
         return "red";
+      default:
+        return "black";
     }
   })();
   return pinColor;
 };
 
 export const getAllParkingsData = (
-  parkings,
-  userPositionOnMap,
-  searchedPlace
+  parkings: Parking[],
+  userPositionOnMap: Position,
+  searchedPlace: Position
 ) => {
   const parkingData = parkings.map((parking) => {
     const parkingLatLng = {
@@ -36,11 +43,15 @@ export const getAllParkingsData = (
       distanceBetweenSearchedPlaceAndParking,
     };
   });
-  let parkingsWithinRange = [];
+  let parkingsWithinRange: PopUpParkingType[] = [];
   if (searchedPlace) {
-    parkingsWithinRange = parkingData.filter(
-      (parking) => parking.distanceBetweenSearchedPlaceAndParking < 30
-    );
+    parkingsWithinRange = parkingData.filter((parking) => {
+      if (parking.distanceBetweenSearchedPlaceAndParking) {
+        return parking.distanceBetweenSearchedPlaceAndParking < 30;
+      } else {
+        return;
+      }
+    }) as PopUpParkingType[];
   }
   return { parkingData, parkingsWithinRange };
 };

@@ -1,11 +1,11 @@
-import { View, Text } from "react-native";
 import React from "react";
+import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface SettingsButtonProps {
   label: string;
   icon: any;
-  action: any;
+  action?: any;
 }
 const SettingsButton = ({ label, icon, action }: SettingsButtonProps) => {
   return (

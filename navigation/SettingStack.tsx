@@ -1,21 +1,19 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { SettingStackParamList } from "../typescript/navigation/navigation.types";
 import SettingScreen from "../screen/SettingScreen";
-import ProfilScreen from "../screen/ProfilScreen";
-import ThemeScreen from "../screen/ThemeScreen";
 import FavoriteScreen from "../screen/FavoriteScreen";
 
-const Stack = createNativeStackNavigator();
+const Setting_Stack = createNativeStackNavigator<SettingStackParamList>();
 
 const SettingStack = () => {
   return (
-    <Stack.Navigator
+    <Setting_Stack.Navigator
       screenOptions={{ headerShown: false }}
       initialRouteName="Settings"
     >
-      <Stack.Screen name="Settings" component={SettingScreen} />
-      <Stack.Screen name="Profil" component={ProfilScreen} />
-      <Stack.Screen name="Favorites" component={FavoriteScreen} />
-    </Stack.Navigator>
+      <Setting_Stack.Screen name="Settings" component={SettingScreen} />
+      <Setting_Stack.Screen name="Favorites" component={FavoriteScreen} />
+    </Setting_Stack.Navigator>
   );
 };
 

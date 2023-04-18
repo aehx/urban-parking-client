@@ -1,9 +1,11 @@
 import { getDistance } from "geolib";
+import { Position } from "../typescript/components/MapView.type";
+import { LatLng } from "../typescript/parkingType/parking.type";
 
 export const distanceBetween = (
-  userPositionOnMap,
-  parkingLatLng,
-  searchedPosition
+  userPositionOnMap: Position,
+  parkingLatLng: LatLng,
+  searchedPosition: Position
 ) => {
   const distanceBetweenUserAndParking = userPositionOnMap
     ? getDistance(

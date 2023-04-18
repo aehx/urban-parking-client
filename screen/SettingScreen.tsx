@@ -1,70 +1,39 @@
-import {
-  View,
-  ImageBackground,
-} from "react-native";
-import {styles} from "../style/screen/SettingScreen"
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React, { useContext } from "react";
-import SettingsButton from "../components/SettingsButton";
+import { View, ImageBackground, Text } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../context/AuthContext";
+import { styles } from "../style/screen/SettingScreen";
+import SettingsButton from "../components/SettingsButton";
+import { SettingScreenProps } from "../typescript/navigation/navigation.types";
 
-const SettingScreen = ({ navigation }) => {
+const SettingScreen = ({ navigation }: SettingScreenProps) => {
   const { logout } = useContext(AuthContext);
   return (
     <ImageBackground
       source={require("../assets/background.jpg")}
       style={styles.container}
     >
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Urban Parkings</Text>
+      </View>
       <View style={styles.favoriteContainer}>
         <SettingsButton
           label="Favoris"
-          icon={
-            <Ionicons
-              name="heart-outline"
-              size={22}
-              style={styles.icon}
-            />
-          }
+          icon={<Ionicons name="heart-outline" size={22} style={styles.icon} />}
           action={() => {
             navigation.navigate("Favorites");
           }}
         />
         <SettingsButton
-          label="profil"
-          icon={
-            <Ionicons
-              name="person-outline"
-              size={22}
-              style={styles.icon}
-            />
-          }
-          action={() => {
-            navigation.navigate("Profil");
-          }}
-        />
-        <SettingsButton
           label="Thème"
-          icon={
-            <Icon
-              name="theme-light-dark"
-              size={22}
-              style={styles.icon}
-            />
-          }
-          action={() => {}}
+          icon={<Icon name="theme-light-dark" size={22} style={styles.icon} />}
         />
       </View>
       <View style={{ paddingLeft: 40 }}>
         <SettingsButton
           label="Déconnexion"
-          icon={
-            <Icon
-              name="logout"
-              size={22}
-              style={styles.icon}
-            />
-          }
+          icon={<Icon name="logout" size={22} style={styles.icon} />}
           action={() => {
             logout();
           }}

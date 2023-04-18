@@ -1,8 +1,8 @@
-import { AuthProvider } from "./context/AuthContext";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store";
-import AppNav from "./navigation/AppNav";
 import { PersistGate } from "redux-persist/integration/react";
+import { AuthProvider } from "./context/AuthContext";
+import AppNav from "./navigation/AppNav";
 
 export default function App() {
   return (

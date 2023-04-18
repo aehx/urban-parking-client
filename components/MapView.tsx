@@ -4,31 +4,35 @@ import MapView, { Marker } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllParkingsData } from "../utils/mapview.utils";
 import { addParkingList, addPopUpParking } from "../redux/reducers/parking";
+import { RootState } from "../redux/store";
+import { MapViewProps, Position } from "../typescript/components/MapView.type";
+import { PopUpParkingType } from "../typescript/parkingType/parking.type";
 
 const MapViewComponent = ({
   initialPosition,
   showsUserLocation,
   searchedPlace,
   userPosition,
-}) => {
-  const { parkings } = useSelector((state) => state.parking.value);
+}:MapViewProps) => {
+  const { parkings } = useSelector((state:RootState) => state.parking);
   const dispatch = useDispatch();
-  const [marker, setMarker] = useState(null);
+  const [marker, setMarker] = useState<PopUpParkingType[]|null>(null);
   const userPositionOnMap = userPosition ?? null;
 
   useEffect(() => {
     if (searchedPlace) {
       const { parkingData, parkingsWithinRange } = getAllParkingsData(
         parkings,
-        userPositionOnMap,
+        userPositionOnMap as Position,
         searchedPlace
       );
       dispatch(addParkingList(parkingsWithinRange));
-      setMarker(parkingData);
+      setMarker(parkingData as PopUpParkingType[]);
     } else {
       dispatch(addParkingList(null));
     }
   }, [searchedPlace, userPosition]);
+
   return (
     <MapView
       style={styles.map}

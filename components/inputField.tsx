@@ -1,5 +1,5 @@
 import React from "react";
-import {inputStyles} from "../style/component/inputField" 
+import {inputStyles} from "../style/component/inputField"
 import {
   View,
   TextInput,
@@ -11,8 +11,8 @@ interface inputFieldProps {
   icon: React.ReactNode;
   inputType?: string;
   keyboardType?: KeyboardTypeOptions;
-  onChangeText: any;
-  value: string;
+  onChangeText: (key:string)=>void;
+  value?: string;
 }
 
 export default function InputField({

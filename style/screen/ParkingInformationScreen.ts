@@ -39,7 +39,13 @@ export const styles = StyleSheet.create({
     width: "80%",
     marginTop: 30,
   },
-  map:
-    { height: "30%", width: "80%", borderRadius: 10 },
-  iconFav_Heart:{ color: "#2795FF", marginBottom: 10 }
-})
+  map: {
+    height: "30%",
+    width: "80%",
+    borderRadius: 10,
+  },
+  iconFav_Heart: {
+    color: "#2795FF",
+    marginBottom: 10,
+  },
+});

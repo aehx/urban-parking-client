@@ -43,11 +43,11 @@ export const styles = StyleSheet.create({
   textBold: {
     fontWeight: "bold",
   },
-  closeIcon:{
+  closeIcon: {
     position: "absolute",
     top: "-50%",
     right: 5,
     color: "#0B131Dee",
   },
-  directionIcon:{ color: "#2795FF", marginBottom: 10 }
+  directionIcon: { color: "#2795FF", marginBottom: 10 },
 });

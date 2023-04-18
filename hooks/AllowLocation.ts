@@ -1,28 +1,40 @@
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
+import { searchedPlaceData } from "../typescript/hooks/useSearch";
 
-const allowLocation = () => {
-  const [location, setLocation] = useState(null);
-  const [positionNotGranted, setPositionNotGranted] = useState(null);
+const AllowLocation = () => {
+  const [location, setLocation] = useState<null | searchedPlaceData>(null);
+  const [positionNotGranted, setPositionNotGranted] =
+    useState<null | searchedPlaceData>(null);
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setPositionNotGranted({
-          latitude: 48.51,
-          longitude: 2.34,
-          latitudeDelta: 10,
-          longitudeDelta: 10,
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          setPositionNotGranted({
+            latitude: 48.51,
+            longitude: 2.34,
+            latitudeDelta: 10,
+            longitudeDelta: 10,
+          });
+          return;
+        }
+        let { latitude, longitude } = (
+          await Location.getCurrentPositionAsync({})
+        )?.coords;
+        setLocation({
+          latitude,
+          longitude,
+          latitudeDelta: 5,
+          longitudeDelta: 5,
         });
-        return;
+      } catch (error: any) {
+        console.log(error);
       }
-      let { latitude, longitude } = (await Location.getCurrentPositionAsync({}))
-        ?.coords;
-      setLocation({ latitude, longitude, latitudeDelta: 5, longitudeDelta: 5 });
     })();
   }, []);
   return { location, positionNotGranted };
 };
 
-export default allowLocation;
+export default AllowLocation;

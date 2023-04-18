@@ -1,60 +1,76 @@
 import React, { createContext, useEffect, useState } from "react";
-import { auth } from "../axios.config";
+import axios, { AxiosResponse } from "axios";
+import jwtDecode from "jwt-decode";
+import { auth, user } from "../axios.config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import {
+  UserContextType,
+  UserData,
+  UserInfo,
+  userContextProviderType,
+  Body,
+  JwtTokenType,
+  AxiosError,
+} from "../typescript/context/AuthContext";
 
-type UserContextType = {
-  login: any;
-  logout: any;
-};
-
-type userContextProviderType = {
-  children: React.ReactNode;
-};
 export const AuthContext = createContext({} as UserContextType);
 
 export const AuthProvider = ({ children }: userContextProviderType) => {
   const [userToken, setUserToken] = useState<null | string>(null);
-  const [userInfo, setUserInfo] = useState<null | {
-    username: string;
-    favorites: string[];
-  }>(null);
+  const [userInfo, setUserInfo] = useState<null | UserInfo>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loginError,setLoginError] = useState<null|string>(null)
+  const [registerError,setRegisterError] = useState<null|string>(null)
 
   const login = async (email = "", password = "") => {
     try {
       setIsLoading(true);
-      const result = await auth.post("/login", { email, password });
+      const result: AxiosResponse<UserData|AxiosError> = await user.post("/login", {
+        email,
+        password,
+      });
+      if('error' in result.data){
+        setLoginError(result.data.error);
+        setIsLoading(false);
+        return;
+      }
       let token = result.data.token;
-      let userInfo = {
+      let userInfo: UserInfo = {
         username: result.data.username,
         favorites: result.data.favorites,
-        email:result.data.email
+        email: result.data.email,
       };
       setUserToken(token);
       setUserInfo(userInfo);
       await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      setLoginError(null);
       setIsLoading(false);
     } catch (e) {
       console.log("-----error", e);
     }
   };
 
-  const signup = async (body) => {
+  const signup = async (body: Body) => {
     try {
       setIsLoading(true);
-      const result = await auth.post("/signup", body);
+      const result: AxiosResponse<UserData|AxiosError> = await user.post("/signup", body);
+      if('error' in result.data){
+        setRegisterError(result.data.error);
+        setIsLoading(false);
+        return;
+      }
       let token = result.data.token;
-      let userInfo = {
+      let userInfo: UserInfo = {
         username: result.data.username,
         favorites: result.data.favorites,
-        email: result.data.email
+        email: result.data.email,
       };
       setUserToken(token);
       setUserInfo(userInfo);
       await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      setRegisterError(null);
       setIsLoading(false);
     } catch (e) {
       console.log("-----error", e);
@@ -63,7 +79,7 @@ export const AuthProvider = ({ children }: userContextProviderType) => {
 
   const logout = async () => {
     setIsLoading(true);
-    const result = await axios.post(
+    await axios.post(
       "https://urban-parking-server.vercel.app/auth/signout",
       { token: userToken },
       {
@@ -80,11 +96,23 @@ export const AuthProvider = ({ children }: userContextProviderType) => {
     try {
       setIsLoading(true);
       let userToken = await AsyncStorage.getItem("token");
-      let userInfo = await AsyncStorage.getItem("userInfo");
-      userInfo = JSON.parse(userInfo);
+      let userInfoString: string | null = await AsyncStorage.getItem(
+        "userInfo"
+      );
+      let userInfo: UserInfo | null = JSON.parse(userInfoString as string);
       if (userInfo) {
-        setUserToken(userToken);
-        setUserInfo(userInfo);
+        const token: JwtTokenType | null = jwtDecode(userToken as string);
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (token && token?.exp < currentTime) {
+          await auth.put("/removeToken", { email: userInfo.email });
+          AsyncStorage.removeItem("token");
+          AsyncStorage.removeItem("userInfo");
+          setUserToken(null);
+          setUserInfo(null);
+        } else {
+          setUserToken(userToken);
+          setUserInfo(userInfo);
+        }
       }
       setIsLoading(false);
     } catch (e) {
@@ -93,12 +121,13 @@ export const AuthProvider = ({ children }: userContextProviderType) => {
   };
 
   useEffect(() => {
+    console.log("render")
     isLoggedIn();
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, signup, userToken, userInfo, isLoading }}
+      value={{ login, logout, signup, userToken, userInfo, isLoading,loginError,registerError }}
     >
       {children}
     </AuthContext.Provider>

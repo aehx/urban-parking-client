@@ -1,14 +1,17 @@
+import React from "react";
 import { View, SafeAreaView, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import {styles} from "../style/screen/ParkingListScreen"
-import React from "react";
-import ParkingListCard from "../components/ParkingListCard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { addParkingSelected } from "../redux/reducers/parking";
+import { RootState } from "../redux/store";
+import { styles } from "../style/screen/ParkingListScreen";
+import ParkingListCard from "../components/ParkingListCard";
+import { ParkingListScreenProps } from "../typescript/navigation/navigation.types";
+import { ParkingData } from "../typescript/components/ParkingListCard.types";
 
-const ParkingListScreen = ({ navigation }) => {
+const ParkingListScreen = ({ navigation }: ParkingListScreenProps) => {
   const dispatch = useDispatch();
-  const { parkingList } = useSelector((state) => state.parking.value);
+  const { parkingList } = useSelector((state: RootState) => state.parking);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,7 +30,7 @@ const ParkingListScreen = ({ navigation }) => {
             return (
               <ParkingListCard
                 {...item}
-                getParkingData={(parking) => {
+                getParkingData={(parking: ParkingData) => {
                   dispatch(addParkingSelected(parking)),
                     navigation.navigate("ParkingInformation");
                 }}
@@ -39,6 +42,5 @@ const ParkingListScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
 
 export default ParkingListScreen;

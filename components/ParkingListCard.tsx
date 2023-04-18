@@ -1,8 +1,9 @@
-import { View, Text } from "react-native";
 import React from "react";
-import {styles} from "../style/component/parkingListCard"
+import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { styles } from "../style/component/parkingListCard";
+import { ParkingListCardProps } from "../typescript/components/ParkingListCard.types";
 
 const ParkingListCard = ({
   distanceBetweenUserAndParking,
@@ -11,7 +12,7 @@ const ParkingListCard = ({
   longitude,
   latitude,
   getParkingData,
-}) => {
+}: ParkingListCardProps) => {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
@@ -28,10 +29,11 @@ const ParkingListCard = ({
       <View style={styles.textContainer}>
         <Text style={styles.text}>{name}</Text>
         <Text style={styles.text}>places disponibles : {dispo}</Text>
-        {distanceBetweenUserAndParking &&
-        <Text style={[styles.text, styles.textBold, styles.distance]}>
-          à  { distanceBetweenUserAndParking.toFixed(0)} km
-        </Text>}
+        {distanceBetweenUserAndParking && (
+          <Text style={[styles.text, styles.textBold, styles.distance]}>
+            à {distanceBetweenUserAndParking.toFixed(0)} km
+          </Text>
+        )}
       </View>
       <View style={styles.infoContainer}>
         <Ionicons name="information-circle-outline" color="#ddd" size={30} />
@@ -40,6 +42,5 @@ const ParkingListCard = ({
     </TouchableOpacity>
   );
 };
-
 
 export default ParkingListCard;

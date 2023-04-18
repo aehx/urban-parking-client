@@ -1,14 +1,17 @@
 import { useCallback, useState } from "react";
-import axios from "axios";
 import { Keyboard } from "react-native";
+import axios, { AxiosResponse } from "axios";
+import { GeoData, searchedPlaceData } from "../typescript/hooks/useSearch";
 
 const useSearch = (search: string) => {
-  const [searchedPlace, setSearchedPlace] = useState(null);
+  const [searchedPlace, setSearchedPlace] = useState<null | searchedPlaceData>(
+    null
+  );
   const [error, setError] = useState(null);
   const searchResult = useCallback(async () => {
     try {
       if (search) {
-        const axiosResult = await axios.get(
+        const axiosResult: AxiosResponse<GeoData> = await axios.get(
           `https://api-adresse.data.gouv.fr/search/?q=${search}`
         );
         const latLngData = axiosResult.data.features[0];

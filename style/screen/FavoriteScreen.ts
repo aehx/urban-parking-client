@@ -15,4 +15,4 @@ export const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 10,
   },
-})
+});

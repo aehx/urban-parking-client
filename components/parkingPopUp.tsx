@@ -1,11 +1,16 @@
-import { View, Text, Linking, TouchableOpacity } from "react-native";
-import { useDispatch } from "react-redux";
 import React from "react";
-import {styles} from "../style/component/parkingPopUp"
+import { useDispatch } from "react-redux";
+import { View, Text, Linking, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { styles } from "../style/component/parkingPopUp";
 import { addPopUpParking } from "../redux/reducers/parking";
+import { ParkingPopUpProps } from "../typescript/components/ParkingPopUp.types";
 
-const ParkingPopUp = ({ distanceBetweenUserAndParking, name, dispo }) => {
+const ParkingPopUp = ({
+  distanceBetweenUserAndParking,
+  name,
+  dispo,
+}: ParkingPopUpProps) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.popUpContainer}>
@@ -27,11 +32,7 @@ const ParkingPopUp = ({ distanceBetweenUserAndParking, name, dispo }) => {
           )
         }
       >
-        <Icon
-          name="directions"
-          size={50}
-          style={styles.directionIcon}
-        />
+        <Icon name="directions" size={50} style={styles.directionIcon} />
         <Text style={styles.text}>Y aller</Text>
       </TouchableOpacity>
       <View style={styles.textContainer}>

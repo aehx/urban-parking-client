@@ -1,46 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import MapScreen from "../screen/MapScreen";
+import {
+  addParkingList,
+  addParkingSelected,
+  addPopUpParking,
+} from "../redux/reducers/parking";
 import SettingStack from "./SettingStack";
-import FavoriteScreen from "../screen/FavoriteScreen";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ParkingListScreen from "../screen/ParkingListScreen";
-import ParkingInformationScreen from "../screen/ParkingInformationScreen";
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+import HomeStack from "./HomeStack";
+import FavoriteStack from "./FavoriteStack";
+import { BottomTabParamList } from "../typescript/navigation/navigation.types";
 
-const HomeStack = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="Map"
-    >
-      <Stack.Screen name="Map" component={MapScreen} />
-      <Stack.Screen name="ParkingList" component={ParkingListScreen} />
-      <Stack.Screen
-        name="ParkingInformation"
-        component={ParkingInformationScreen}
-      />
-    </Stack.Navigator>
-  );
-};
-const FavoriteStack = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="Favorites"
-    >
-      <Stack.Screen name="Favorites" component={FavoriteScreen} />
-      <Stack.Screen
-        name="ParkingInformation"
-        component={ParkingInformationScreen}
-      />
-    </Stack.Navigator>
-  );
-};
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const AppStack = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(addParkingSelected(null)),
+      dispatch(addParkingList(null)),
+      dispatch(addPopUpParking(null));
+  }, []);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -72,7 +52,7 @@ const AppStack = () => {
       <Tab.Screen
         name="settings"
         component={SettingStack}
-        options={({ route }) => ({
+        options={() => ({
           tabBarStyle: {
             backgroundColor: "#0B131D",
           },

@@ -1,26 +1,36 @@
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, Text, FlatList, SafeAreaView } from "react-native";
-import {styles} from "../style/screen/FavoriteScreen"
-import React, { useEffect } from "react";
-import getFavoritesParking from "../hooks/getFavoritesParking";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { styles } from "../style/screen/FavoriteScreen";
+import getFavoritesParking from "../hooks/getFavoritesParking";
 import ParkingListCard from "../components/ParkingListCard";
 import { addParkingSelected } from "../redux/reducers/parking";
-import { useDispatch, useSelector } from "react-redux";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { FavoriteStackParamList } from "../typescript/navigation/navigation.types";
+import { RootState } from "../redux/store";
+import { Parking } from "../typescript/parkingType/parking.type";
 
-const FavoriteScreen = ({ navigation }) => {
-  const dispatch = useDispatch()
-  const {favoritesParking} = useSelector((state) =>state.parking.value);
-  const {loading,error} = getFavoritesParking();
-  useEffect(()=>{},[favoritesParking])
-  if(favoritesParking.length == 0){
+type ParkingListScreenProps = {
+  navigation: NativeStackScreenProps<
+    FavoriteStackParamList,
+    "Favorites"
+  >["navigation"];
+};
+const FavoriteScreen = ({ navigation }: ParkingListScreenProps) => {
+  const dispatch = useDispatch();
+  const { favoritesParking } = useSelector((state: RootState) => state.parking);
+  getFavoritesParking();
+  if (favoritesParking.length == 0) {
     return (
-      <SafeAreaView style={[styles.container,{justifyContent:"center"}]}>
-        <Text style={{color:"#ddd"}}>Aucun favoris</Text>
+      <SafeAreaView style={[styles.container, { justifyContent: "center" }]}>
+        <Text style={{ color: "#ddd" }}>Aucun favoris</Text>
       </SafeAreaView>
-    )
+    );
   }
-  const userFavoritesParking = Array.from(new Set(favoritesParking.map((item) => JSON.stringify(item))))
-  .map((item) => JSON.parse(item));
+  const userFavoritesParking: Parking[] = Array.from(
+    new Set(favoritesParking.map((item) => JSON.stringify(item)))
+  ).map((item) => JSON.parse(item));
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
