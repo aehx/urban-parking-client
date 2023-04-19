@@ -13,7 +13,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { styles } from "../style/screen/ParkingInformationScreen";
 import { addFavoritesParkingData } from "../redux/reducers/parking";
 import { RootState } from "../redux/store";
-import { auth,parking } from "../axios.config";
+import { parking } from "../axios.config";
 import { pinStyle } from "../utils/mapview.utils";
 import { AuthContext } from "../context/AuthContext";
 import { ParkingInformationScreenProps } from "../typescript/navigation/navigation.types";
