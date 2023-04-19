@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { StatusBar } from "react-native"
-import { ThemeContextType, themeContextProviderType } from "../typescript/context/ThemeContext";
+import { AppTheme, ThemeContextType, DarkTheme, LightTheme, themeContextProviderType } from "../typescript/context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const ThemeContext = createContext({} as ThemeContextType)
@@ -8,9 +8,9 @@ export const ThemeContext = createContext({} as ThemeContextType)
 export const ThemeProvider = ({children}:themeContextProviderType)=>{
   const [userTheme,setUserTheme] = useState<string>("light");
   
-  StatusBar.setBarStyle(`${userTheme === "light" ? "dark" : "light"}-content`as "dark-content" | "light-content")
+  StatusBar.setBarStyle(`${userTheme === "light" ? "dark" : "light"}-content`as "dark-content" | "light-content")
 
-  const appTheme = {
+  const appTheme:AppTheme = {
     lightTheme : {
       primary :{
         color : "#000"
@@ -19,7 +19,7 @@ export const ThemeProvider = ({children}:themeContextProviderType)=>{
         color:"#2795AA"
       },
       background:{
-        backgroundColor:"#fff"
+        backgroundColor:"#feeff0f0"
       },
       imageBackground:require("../assets/backgroundLight.jpg"),
       authColor:{
@@ -44,7 +44,7 @@ export const ThemeProvider = ({children}:themeContextProviderType)=>{
       },
       popUp:{
         primary:{
-          backgroundColor:"#fff"
+          backgroundColor:"#feeff0f0"
         },
         icon:{
           color:"#000"
@@ -103,7 +103,7 @@ export const ThemeProvider = ({children}:themeContextProviderType)=>{
     const themeInStorage = await AsyncStorage.getItem("theme")
     if(!themeInStorage){
       await AsyncStorage.setItem("theme","light")
-      StatusBar.setBarStyle(`light-content`)
+      StatusBar.setBarStyle(`dark-content`)
       setUserTheme("light");
     }
     setUserTheme(themeInStorage as string)
@@ -114,7 +114,8 @@ export const ThemeProvider = ({children}:themeContextProviderType)=>{
   },[])
   
 
-  const theme = userTheme === "light" ? appTheme.lightTheme : appTheme.darkTheme;
+  const theme: LightTheme | DarkTheme = userTheme === "light" ? appTheme.lightTheme : appTheme.darkTheme;
+  
   const updateTheme = async ()=>{
     const switchTheme = userTheme === "light" ? "dark" : "light";
     await AsyncStorage.setItem("theme",switchTheme)

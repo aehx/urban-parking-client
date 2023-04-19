@@ -3,7 +3,7 @@ import * as Location from "expo-location";
 import { searchedPlaceData } from "../typescript/hooks/useSearch";
 
 const AllowLocation = () => {
-  const [location, setLocation] = useState<null | searchedPlaceData>(null);
+  const [positionGranted, setPositionGranted] = useState<null | searchedPlaceData>(null);
   const [positionNotGranted, setPositionNotGranted] =
     useState<null | searchedPlaceData>(null);
 
@@ -18,23 +18,23 @@ const AllowLocation = () => {
             latitudeDelta: 10,
             longitudeDelta: 10,
           });
-          return;
+        }else{
+          await Location.watchPositionAsync({ distanceInterval: 50 }, (location) => {
+            setPositionGranted({
+              latitude:location?.coords.latitude,
+              longitude:location?.coords.longitude,
+              latitudeDelta: 5,
+              longitudeDelta: 5,
+            });
+
+          });
         }
-        let { latitude, longitude } = (
-          await Location.getCurrentPositionAsync({})
-        )?.coords;
-        setLocation({
-          latitude,
-          longitude,
-          latitudeDelta: 5,
-          longitudeDelta: 5,
-        });
       } catch (error: any) {
         console.log(error);
       }
     })();
   }, []);
-  return { location, positionNotGranted };
+  return { positionGranted, positionNotGranted };
 };
 
 export default AllowLocation;

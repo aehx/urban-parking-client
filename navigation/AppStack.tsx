@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
-  addParkingList,
-  addParkingSelected,
-  addPopUpParking,
+  addListOfParkingsData,
+  addParkingSelectedData,
+  addPopUpParkingData,
 } from "../redux/reducers/parking";
 import SettingStack from "./SettingStack";
 import HomeStack from "./HomeStack";
@@ -17,12 +17,14 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const AppStack = () => {
   const dispatch = useDispatch();
-  const { theme } = useContext(ThemeContext)
+  const { theme } = useContext(ThemeContext);
+
   useEffect(() => {
-    dispatch(addParkingSelected(null)),
-      dispatch(addParkingList(null)),
-      dispatch(addPopUpParking(null));
+    dispatch(addParkingSelectedData(null)),
+      dispatch(addListOfParkingsData(null)),
+      dispatch(addPopUpParkingData(null));
   }, []);
+  
   return (
     <Tab.Navigator
       screenOptions={{

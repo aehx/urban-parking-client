@@ -14,14 +14,14 @@ export interface AxiosError{
 }
 export interface UserData {
   email: string;
-  favorites: any[];
+  favorites: string[];
   token: string;
   username: string;
 }
 
 export interface UserInfo {
   email: string;
-  favorites: any[];
+  favorites: string[];
   username: string;
 }
 

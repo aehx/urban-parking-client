@@ -6,9 +6,9 @@ import {
 } from "../parkingType/parking.type";
 
 export type InitialStateType = {
-  parkings: [] | Parking[];
-  popUpParking: null | ParkingWithDistance;
-  parkingList: null | ParkingWithDistance[] | PopUpParkingType[];
-  parkingSelected: null | ParkingWithDistance | ParkingData;
-  favoritesParking: [] | Parking[];
+  allparkingsData: [] | Parking[];
+  popUpParkingData: null | ParkingWithDistance;
+  listOfParkingsData: null | ParkingWithDistance[] | PopUpParkingType[];
+  parkingSelectedData: null | ParkingWithDistance | ParkingData;
+  favoritesParkingData: [] | Parking[];
 };

@@ -9,9 +9,7 @@ const persistConfig = {
   storage: AsyncStorage,
 };
 
-const reducers: Reducer<{ parking: InitialStateType }> = combineReducers({
-  parking: parking,
-});
+const reducers: Reducer<{ parking: InitialStateType }> = combineReducers({parking});
 
 const persisted = persistReducer(persistConfig, reducers);
 

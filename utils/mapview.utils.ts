@@ -4,6 +4,10 @@ import {
   PopUpParkingType,
 } from "../typescript/parkingType/parking.type";
 import { distanceBetween } from "./distance.utils";
+/**
+ * @param places the number of places of the parking 
+ * @return A color based on the number of available spots.
+*/
 
 export const pinStyle = (places: number) => {
   const pinColor = (() => {
@@ -21,12 +25,18 @@ export const pinStyle = (places: number) => {
   return pinColor;
 };
 
+/**
+ * @param allparkingsData all of the car parks
+ * @param userPositionOnMap The coordinates of the user
+ * @param searchedPlace The coordinates of the searched location
+ * @return A color based on the number of available spots.
+*/
 export const getAllParkingsData = (
-  parkings: Parking[],
+  allparkingsData: Parking[],
   userPositionOnMap: Position,
   searchedPlace: Position
 ) => {
-  const parkingData = parkings.map((parking) => {
+  const parkingData = allparkingsData.map((parking) => {
     const parkingLatLng = {
       latitude: parking.latitude,
       longitude: parking.longitude,

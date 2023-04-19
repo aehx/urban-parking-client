@@ -5,7 +5,7 @@ import { ThemeContext } from "../context/ThemeContext";
 
 interface SettingsButtonProps {
   label: string;
-  icon: any;
+  icon: React.ReactNode;
   action?: any;
 }
 const SettingsButton = ({ label, icon, action }: SettingsButtonProps) => {

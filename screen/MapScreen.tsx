@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import {
-  SafeAreaView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,7 +11,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { RootState } from "../redux/store";
 import { styles } from "../style/screen/MapScreen";
-import { addParkingSelected, addPopUpParking } from "../redux/reducers/parking";
+import { addParkingSelectedData, addPopUpParkingData } from "../redux/reducers/parking";
 import MapViewComponent from "../components/MapView";
 import ParkingPopUp from "../components/parkingPopUp";
 import allowLocation from "../hooks/AllowLocation";
@@ -22,22 +21,18 @@ import { MapScreenProps } from "../typescript/navigation/navigation.types";
 import { ThemeContext } from "../context/ThemeContext";
 
 export default function MapScreen({ navigation }: MapScreenProps) {
-  const [searchInputValue, setSearchInputValue] = useState<string>("");
-  const { searchResult,searchedPlace, setSearchedPlace } =
-    useSearch(searchInputValue);
-  const { popUpParking } = useSelector((state: RootState) => state.parking);
   const dispatch = useDispatch();
-  const { location, positionNotGranted } = allowLocation();
-  const initialPosition =
-    (location as searchedPlaceData) ??
-    (positionNotGranted as searchedPlaceData);
-  const userPosition = location ?? null;
-  const showsUserLocation = !!location;
+  const [searchInputValue, setSearchInputValue] = useState<string>("");
+  const { popUpParkingData } = useSelector((state: RootState) => state.parking);
+  const { positionGranted, positionNotGranted } = allowLocation();
+  const { getResultFromSearch,searchedPlace, setSearchedPlace } = useSearch(searchInputValue);
+  const initialPosition = (positionGranted as searchedPlaceData) ?? (positionNotGranted as searchedPlaceData);
+  const userPosition = positionGranted;
+  const showsUserLocation = !!positionGranted;
   const parkingPopUpProps = {
-    distanceBetweenUserAndParking:
-      popUpParking?.distanceBetweenUserAndParking as number,
-    name: popUpParking?.name as string,
-    dispo: popUpParking?.dispo as number,
+    distanceBetweenUserAndParking:popUpParkingData?.distanceBetweenUserAndParking as number,
+    name: popUpParkingData?.name as string,
+    dispo: popUpParkingData?.dispo as number,
   };
   const { theme } = useContext(ThemeContext)
 
@@ -55,7 +50,7 @@ export default function MapScreen({ navigation }: MapScreenProps) {
           size={28}
           color={theme.primary.color}
           style={{ marginRight: 5 }}
-          onPress={() => searchResult()}
+          onPress={() => getResultFromSearch()}
         />
         <TextInput
           placeholder={"Chercher un parking"}
@@ -74,12 +69,12 @@ export default function MapScreen({ navigation }: MapScreenProps) {
             onPress={() => {
               setSearchInputValue(""),
                 setSearchedPlace(null),
-                dispatch(addPopUpParking(null));
+                dispatch(addPopUpParkingData(null));
             }}
           />
         )}
       </View>
-      {popUpParking ? (
+      {popUpParkingData ? (
         <>
           <TouchableOpacity
             style={[styles.button,theme.popUp.primary]}
@@ -95,7 +90,7 @@ export default function MapScreen({ navigation }: MapScreenProps) {
           <TouchableOpacity
             style={[styles.buttonInfo,theme.popUp.primary]}
             onPress={() => {
-              dispatch(addParkingSelected({ ...popUpParking }));
+              dispatch(addParkingSelectedData({ ...popUpParkingData }));
               navigation.navigate("ParkingInformation");
             }}
           >

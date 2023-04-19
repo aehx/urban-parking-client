@@ -11,9 +11,9 @@ import MapView, { Marker } from "react-native-maps";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { styles } from "../style/screen/ParkingInformationScreen";
-import { addFavoritesParking } from "../redux/reducers/parking";
+import { addFavoritesParkingData } from "../redux/reducers/parking";
 import { RootState } from "../redux/store";
-import { parking } from "../axios.config";
+import { auth,parking } from "../axios.config";
 import { pinStyle } from "../utils/mapview.utils";
 import { AuthContext } from "../context/AuthContext";
 import { ParkingInformationScreenProps } from "../typescript/navigation/navigation.types";
@@ -24,35 +24,33 @@ const ParkingInformationScreen = ({
 }: ParkingInformationScreenProps) => {
   const dispatch = useDispatch();
   const [refresh, setRefresh] = useState<boolean>(false);
-  const { parkings } = useSelector((state: RootState) => state.parking);
+  const { allparkingsData, parkingSelectedData, favoritesParkingData } = useSelector((state: RootState) => state.parking);
   const { userToken, userInfo } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
-  const { parkingSelected, favoritesParking } = useSelector(
-    (state: RootState) => state.parking
-  );
-  let isFavorites = favoritesParking.length > 0
-      ? favoritesParking.filter((el) => el.name === parkingSelected?.name)
+  let isFavorites = favoritesParkingData && favoritesParkingData.length > 0
+      ? favoritesParkingData.filter((el) => el.name === parkingSelectedData?.name)
       : [];
 
   useEffect(() => {
     setRefresh(!!refresh);
   }, [isFavorites]);
 
-  const updateFavorite = async () => {
+  const updateUserFavoriteParking = async () => {
     await parking.put(
       "/favorites",
-      { token: userToken, parkingName: parkingSelected?.name },
+      { token: userToken, parkingName: parkingSelectedData?.name },
       {
         headers: { "authorization": "Bearer " + userToken },
       }
     );
+    console.log()
     const axiosResult = await parking.get(`userFavorites/${userInfo?.email}`);
-    isFavorites = axiosResult.data.includes(parkingSelected?.name);
-    setRefresh(!!isFavorites);
-    const favoriteParking = parkings.filter((parking) =>
+    isFavorites = axiosResult.data.includes(parkingSelectedData?.name);
+    setRefresh(!!refresh);
+    const updatedUserfavoriteParking = allparkingsData.filter((parking) =>
       axiosResult.data.includes(parking.name)
     );
-    dispatch(addFavoritesParking(favoriteParking));
+    dispatch(addFavoritesParkingData(updatedUserfavoriteParking));
   };
   return (
     <SafeAreaView style={[styles.container,theme.background]}>
@@ -66,32 +64,32 @@ const ParkingInformationScreen = ({
           }}
         />
       </View>
-      <Text style={[styles.text, styles.title,theme.primary]}>{parkingSelected?.name}</Text>
+      <Text style={[styles.text, styles.title,theme.primary]}>{parkingSelectedData?.name}</Text>
       <MapView
         style={[styles.map,{borderWidth:1}]}
         provider="google"
         region={{
-          latitude: parkingSelected?.latitude as number,
-          longitude: parkingSelected?.longitude as number,
+          latitude: parkingSelectedData?.latitude as number,
+          longitude: parkingSelectedData?.longitude as number,
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         }}
       >
         <Marker
           coordinate={{
-            latitude: parkingSelected?.latitude as number,
-            longitude: parkingSelected?.longitude as number,
+            latitude: parkingSelectedData?.latitude as number,
+            longitude: parkingSelectedData?.longitude as number,
           }}
-          pinColor={pinStyle(parkingSelected?.dispo ?? 0)}
+          pinColor={pinStyle(parkingSelectedData?.dispo ?? 0)}
         />
       </MapView>
       <View style={styles.textContainer}>
-        <Text style={[styles.text, { marginBottom: 10 }]}>
-          Places disponibles : {parkingSelected?.dispo}
+        <Text style={[styles.text,theme.primary ,{ marginBottom: 10 }]}>
+          Places disponibles : {parkingSelectedData?.dispo}
         </Text>
-        {parkingSelected?.distanceBetweenUserAndParking && (
+        {parkingSelectedData?.distanceBetweenUserAndParking && (
           <Text style={[styles.text, theme.secondary]}>
-            À {parkingSelected?.distanceBetweenUserAndParking.toFixed(0)} km
+            À {parkingSelectedData?.distanceBetweenUserAndParking.toFixed(0)} km
           </Text>
         )}
       </View>
@@ -101,9 +99,9 @@ const ParkingInformationScreen = ({
           onPress={() =>
             Linking.openURL(
               `https://www.google.com/maps/search/?api=1&query=${
-                parkingSelected?.name.toLowerCase().includes("parking")
-                  ? parkingSelected?.name
-                  : "parking " + parkingSelected?.name
+                parkingSelectedData?.name.toLowerCase().includes("parking")
+                  ? parkingSelectedData?.name
+                  : "parking " + parkingSelectedData?.name
               }`
             )
           }
@@ -111,7 +109,7 @@ const ParkingInformationScreen = ({
           <Icon name="directions" size={55} style={[styles.iconFav_Heart,theme.secondary]} />
           <Text style={[styles.text,theme.primary]}>Y aller</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.icon} onPress={() => updateFavorite()}>
+        <TouchableOpacity style={styles.icon} onPress={() => updateUserFavoriteParking()}>
           <Icon
             name={isFavorites.length === 0 ? "heart-plus" : "heart-minus"}
             size={50}

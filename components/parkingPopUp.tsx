@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { View, Text, Linking, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { styles } from "../style/component/parkingPopUp";
-import { addPopUpParking } from "../redux/reducers/parking";
+import { addPopUpParkingData } from "../redux/reducers/parking";
 import { ParkingPopUpProps } from "../typescript/components/ParkingPopUp.types";
 import { ThemeContext } from "../context/ThemeContext";
 
@@ -21,7 +21,7 @@ const ParkingPopUp = ({
         size={35}
         style={[styles.closeIcon,theme.popUp.icon]}
         onPress={() => {
-          dispatch(addPopUpParking(null));
+          dispatch(addPopUpParkingData(null));
         }}
       />
       <TouchableOpacity

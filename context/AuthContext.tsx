@@ -96,10 +96,10 @@ export const AuthProvider = ({ children }: userContextProviderType) => {
     try {
       setIsLoading(true);
       let userToken = await AsyncStorage.getItem("token");
-      let userInfoString: string | null = await AsyncStorage.getItem(
+      let userInfoFromStorage: string | null = await AsyncStorage.getItem(
         "userInfo"
       );
-      let userInfo: UserInfo | null = JSON.parse(userInfoString as string);
+      let userInfo: UserInfo | null = JSON.parse(userInfoFromStorage as string);
       if (userInfo) {
         const token: JwtTokenType | null = jwtDecode(userToken as string);
         const currentTime = Math.floor(Date.now() / 1000);

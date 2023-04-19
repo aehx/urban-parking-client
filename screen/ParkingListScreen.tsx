@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { View, SafeAreaView, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { addParkingSelected } from "../redux/reducers/parking";
+import { addParkingSelectedData } from "../redux/reducers/parking";
 import { RootState } from "../redux/store";
 import { styles } from "../style/screen/ParkingListScreen";
 import ParkingListCard from "../components/ParkingListCard";
@@ -12,7 +12,7 @@ import { ThemeContext } from "../context/ThemeContext";
 
 const ParkingListScreen = ({ navigation }: ParkingListScreenProps) => {
   const dispatch = useDispatch();
-  const { parkingList } = useSelector((state: RootState) => state.parking);
+  const { listOfParkingsData } = useSelector((state: RootState) => state.parking);
   const { theme } = useContext(ThemeContext)
   return (
     <SafeAreaView style={[styles.container,theme.background]}>
@@ -26,13 +26,13 @@ const ParkingListScreen = ({ navigation }: ParkingListScreenProps) => {
       </View>
       <View style={[styles.flatListContainer,theme.flatList]}>
         <FlatList
-          data={parkingList}
+          data={listOfParkingsData}
           renderItem={({ item }) => {
             return (
               <ParkingListCard
                 {...item}
                 getParkingData={(parking: ParkingData) => {
-                  dispatch(addParkingSelected(parking)),
+                  dispatch(addParkingSelectedData(parking)),
                     navigation.navigate("ParkingInformation");
                 }}
               />

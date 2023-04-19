@@ -8,46 +8,46 @@ import { InitialStateType } from "../../typescript/redux/redux.type";
 import { ParkingData } from "../../typescript/components/ParkingListCard.types";
 
 const initialState: InitialStateType = {
-  parkings: [],
-  popUpParking: null,
-  parkingList: null,
-  parkingSelected: null,
-  favoritesParking: [],
+  allparkingsData: [],
+  popUpParkingData: null,
+  listOfParkingsData: null,
+  parkingSelectedData: null,
+  favoritesParkingData: [],
 };
 
 export const parkingSlice = createSlice({
   name: "parking",
   initialState,
   reducers: {
-    addParkings: (
+    addAllparkingsData: (
       state: InitialStateType,
       action: PayloadAction<Parking[]>
     ) => {
-      state.parkings = action.payload;
+      state.allparkingsData = action.payload;
     },
-    addPopUpParking: (
+    addPopUpParkingData: (
       state: InitialStateType,
       action: PayloadAction<ParkingWithDistance | null>
     ) => {
-      state.popUpParking = action.payload;
+      state.popUpParkingData = action.payload;
     },
-    addParkingList: (
+    addListOfParkingsData: (
       state: InitialStateType,
       action: PayloadAction<ParkingWithDistance[] | null>
     ) => {
-      state.parkingList = action.payload;
+      state.listOfParkingsData = action.payload;
     },
-    addParkingSelected: (
+    addParkingSelectedData: (
       state: InitialStateType,
       action: PayloadAction<ParkingWithDistance | ParkingData | null>
     ) => {
-      state.parkingSelected = action.payload;
+      state.parkingSelectedData = action.payload;
     },
-    addFavoritesParking: (
+    addFavoritesParkingData: (
       state: InitialStateType,
       action: PayloadAction<Parking[]>
     ) => {
-      state.favoritesParking = action.payload;
+      state.favoritesParkingData = action.payload;
     },
   },
 });
@@ -57,11 +57,11 @@ export const selectParkings = (state: RootState): InitialStateType =>
   state.parking;
 
 export const {
-  addParkings,
-  addPopUpParking,
-  addParkingList,
-  addParkingSelected,
-  addFavoritesParking,
+  addAllparkingsData,
+  addPopUpParkingData,
+  addListOfParkingsData,
+  addParkingSelectedData,
+  addFavoritesParkingData,
 } = parkingSlice.actions;
 
 export default parkingSlice.reducer;

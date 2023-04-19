@@ -2,6 +2,14 @@ import { getDistance } from "geolib";
 import { Position } from "../typescript/components/MapView.type";
 import { LatLng } from "../typescript/parkingType/parking.type";
 
+/**
+ * 
+ * @param userPositionOnMap The coordinates of the user
+ * @param parkingLatLng The coordinates of the parking
+ * @param searchedPosition The coordinates of the searched location
+ * @returns the distance between user and the parking plus the distance between searched place and the parking
+ */
+
 export const distanceBetween = (
   userPositionOnMap: Position,
   parkingLatLng: LatLng,

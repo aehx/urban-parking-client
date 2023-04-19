@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Keyboard, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllParkingsData } from "../utils/mapview.utils";
-import { addParkingList, addPopUpParking } from "../redux/reducers/parking";
+import { addListOfParkingsData, addPopUpParkingData } from "../redux/reducers/parking";
 import { RootState } from "../redux/store";
 import { MapViewProps, Position } from "../typescript/components/MapView.type";
 import { PopUpParkingType } from "../typescript/parkingType/parking.type";
-import { ThemeContext } from "../context/ThemeContext";
 
 const MapViewComponent = ({
   initialPosition,
@@ -15,23 +14,22 @@ const MapViewComponent = ({
   searchedPlace,
   userPosition,
 }:MapViewProps) => {
-  const { parkings } = useSelector((state:RootState) => state.parking);
+  const { allparkingsData } = useSelector((state:RootState) => state.parking);
   const dispatch = useDispatch();
   const [marker, setMarker] = useState<PopUpParkingType[]|null>(null);
   const userPositionOnMap = userPosition ?? null;
-  const theme = useContext(ThemeContext);
 
   useEffect(() => {
     if (searchedPlace) {
       const { parkingData, parkingsWithinRange } = getAllParkingsData(
-        parkings,
+        allparkingsData,
         userPositionOnMap as Position,
         searchedPlace
       );
-      dispatch(addParkingList(parkingsWithinRange));
+      dispatch(addListOfParkingsData(parkingsWithinRange));
       setMarker(parkingData as PopUpParkingType[]);
     } else {
-      dispatch(addParkingList(null));
+      dispatch(addListOfParkingsData(null));
     }
   }, [searchedPlace, userPosition]);
 
@@ -57,7 +55,7 @@ const MapViewComponent = ({
                     latitude: parking.latitude,
                     longitude: parking.longitude,
                   }}
-                  onPress={() => dispatch(addPopUpParking(parking))}
+                  onPress={() => dispatch(addPopUpParkingData(parking))}
                   pinColor={parking.pinColor}
                 ></Marker>
               );

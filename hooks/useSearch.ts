@@ -4,11 +4,9 @@ import axios, { AxiosResponse } from "axios";
 import { GeoData, searchedPlaceData } from "../typescript/hooks/useSearch";
 
 const useSearch = (search: string) => {
-  const [searchedPlace, setSearchedPlace] = useState<null | searchedPlaceData>(
-    null
-  );
+  const [searchedPlace, setSearchedPlace] = useState<null | searchedPlaceData>(null);
   const [error, setError] = useState(null);
-  const searchResult = useCallback(async () => {
+  const getResultFromSearch = useCallback(async () => {
     try {
       if (search) {
         const axiosResult: AxiosResponse<GeoData> = await axios.get(
@@ -27,7 +25,7 @@ const useSearch = (search: string) => {
       setError(e);
     }
   }, [search]);
-  return { searchResult, searchedPlace, setSearchedPlace, error };
+  return { getResultFromSearch, searchedPlace, setSearchedPlace, error };
 };
 
 export default useSearch;
