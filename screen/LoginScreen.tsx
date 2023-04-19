@@ -8,24 +8,25 @@ import { inputStyles } from "../style/component/inputField";
 import { AuthContext } from "../context/AuthContext";
 import InputField from "../components/inputField";
 import { LoginScreenProps } from "../typescript/navigation/navigation.types";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const { login,loginError } = useContext(AuthContext);
-
+  const {theme} = useContext(ThemeContext)
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Urban Parkings</Text>
+    <SafeAreaView style={[styles.container,theme.background]}>
+      <Text style={[styles.title,theme.authColor.secondary]}>Urban Parkings</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.loginText}>Connexion</Text>
+        <Text style={[styles.loginText,theme.authColor.primary]}>Connexion</Text>
         <InputField
           label={"Email ID"}
           icon={
             <MaterialIcons
               name="alternate-email"
               size={20}
-              style={inputStyles.icon}
+              style={[inputStyles.icon,theme.authColor.tertiary]}
             />
           }
           keyboardType="email-address"
@@ -43,7 +44,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             <Ionicons
               name="ios-lock-closed-outline"
               size={20}
-              style={inputStyles.icon}
+              style={[inputStyles.icon,theme.authColor.tertiary]}
             />
           }
           inputType="password"
@@ -52,7 +53,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
       </View>
       <View style={styles.submitContainer}>
         <TouchableOpacity
-          style={styles.buttonSubmit}
+          style={[styles.buttonSubmit,theme.authColor.buttonBackground]}
           onPress={() => {
             login(email.toLowerCase(), password);
           }}
@@ -60,9 +61,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           <Text>Connexion</Text>
         </TouchableOpacity>
         <View style={styles.redirectButtonContainer}>
-          <Text style={styles.text}>Nouveau sur l'app ?</Text>
+          <Text style={[styles.text,theme.authColor.primary]}>Nouveau sur l'app ?</Text>
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-            <Text style={styles.textSignUp}>Inscrivez-vous ! </Text>
+            <Text style={theme.authColor.secondary}>Inscrivez-vous ! </Text>
           </TouchableOpacity>
         </View>
       </View>

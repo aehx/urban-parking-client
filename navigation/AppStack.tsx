@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -11,11 +11,13 @@ import SettingStack from "./SettingStack";
 import HomeStack from "./HomeStack";
 import FavoriteStack from "./FavoriteStack";
 import { BottomTabParamList } from "../typescript/navigation/navigation.types";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const AppStack = () => {
   const dispatch = useDispatch();
+  const { theme } = useContext(ThemeContext)
   useEffect(() => {
     dispatch(addParkingSelected(null)),
       dispatch(addParkingList(null)),
@@ -26,9 +28,9 @@ const AppStack = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: { backgroundColor: "#0B131D" },
-        tabBarInactiveTintColor: "#fff",
-        tabBarActiveTintColor: "#2795FF",
+        tabBarStyle: theme.background,
+        tabBarInactiveTintColor: theme.primary.color,
+        tabBarActiveTintColor: theme.secondary.color,
       }}
     >
       <Tab.Screen
@@ -53,9 +55,6 @@ const AppStack = () => {
         name="settings"
         component={SettingStack}
         options={() => ({
-          tabBarStyle: {
-            backgroundColor: "#0B131D",
-          },
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-settings-outline" color={color} size={size} />
           ),

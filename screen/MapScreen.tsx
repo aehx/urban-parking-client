@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -19,6 +19,7 @@ import allowLocation from "../hooks/AllowLocation";
 import useSearch from "../hooks/useSearch";
 import { searchedPlaceData } from "../typescript/hooks/useSearch";
 import { MapScreenProps } from "../typescript/navigation/navigation.types";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function MapScreen({ navigation }: MapScreenProps) {
   const [searchInputValue, setSearchInputValue] = useState<string>("");
@@ -38,28 +39,29 @@ export default function MapScreen({ navigation }: MapScreenProps) {
     name: popUpParking?.name as string,
     dispo: popUpParking?.dispo as number,
   };
+  const { theme } = useContext(ThemeContext)
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container,theme.background]}>
       <MapViewComponent
         initialPosition={initialPosition}
         showsUserLocation={showsUserLocation}
         searchedPlace={searchedPlace ?? initialPosition}
         userPosition={userPosition}
       />
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer,theme.mapInput]}>
         <MaterialIcons
           name="search"
           size={28}
-          color="#ddd"
+          color={theme.primary.color}
           style={{ marginRight: 5 }}
           onPress={() => searchResult()}
         />
         <TextInput
           placeholder={"Chercher un parking"}
-          placeholderTextColor={"#ddd"}
+          placeholderTextColor={theme.primary.color}
           keyboardType={"default"}
-          style={styles.input}
+          style={[styles.input,theme.primary]}
           onChangeText={(text) => setSearchInputValue(text)}
           value={searchInputValue}
         />
@@ -67,7 +69,7 @@ export default function MapScreen({ navigation }: MapScreenProps) {
           <Icon
             name="close-circle-outline"
             size={28}
-            color="#ddd"
+            color={theme.primary.color}
             style={{ marginRight: 10 }}
             onPress={() => {
               setSearchInputValue(""),
@@ -80,18 +82,18 @@ export default function MapScreen({ navigation }: MapScreenProps) {
       {popUpParking ? (
         <>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button,theme.popUp.primary]}
             onPress={() => {
               navigation.navigate("ParkingList");
             }}
           >
-            <Text style={[styles.text, { color: "#2795FF" }]}>
+            <Text style={[styles.text, theme.secondary]}>
               Liste des parkings
             </Text>
           </TouchableOpacity>
           <ParkingPopUp {...parkingPopUpProps} />
           <TouchableOpacity
-            style={styles.buttonInfo}
+            style={[styles.buttonInfo,theme.popUp.primary]}
             onPress={() => {
               dispatch(addParkingSelected({ ...popUpParking }));
               navigation.navigate("ParkingInformation");
@@ -99,15 +101,15 @@ export default function MapScreen({ navigation }: MapScreenProps) {
           >
             <Ionicons
               name="information-circle-outline"
-              color="#ddd"
+              color={theme.primary.color}
               size={20}
             />
-            <Text style={[styles.text, styles.textBold, { marginRight: 3 }]}>
+            <Text style={[styles.text, styles.textBold,theme.primary, { marginRight: 3 }]}>
               Plus d'infos
             </Text>
           </TouchableOpacity>
         </>
       ) : null}
-    </SafeAreaView>
+    </View>
   );
 }

@@ -121,7 +121,6 @@ export const AuthProvider = ({ children }: userContextProviderType) => {
   };
 
   useEffect(() => {
-    console.log("render")
     isLoggedIn();
   }, []);
 

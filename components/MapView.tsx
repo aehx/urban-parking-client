@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Keyboard, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import { addParkingList, addPopUpParking } from "../redux/reducers/parking";
 import { RootState } from "../redux/store";
 import { MapViewProps, Position } from "../typescript/components/MapView.type";
 import { PopUpParkingType } from "../typescript/parkingType/parking.type";
+import { ThemeContext } from "../context/ThemeContext";
 
 const MapViewComponent = ({
   initialPosition,
@@ -18,6 +19,7 @@ const MapViewComponent = ({
   const dispatch = useDispatch();
   const [marker, setMarker] = useState<PopUpParkingType[]|null>(null);
   const userPositionOnMap = userPosition ?? null;
+  const theme = useContext(ThemeContext);
 
   useEffect(() => {
     if (searchedPlace) {

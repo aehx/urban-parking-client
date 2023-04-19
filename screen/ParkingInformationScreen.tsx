@@ -17,6 +17,7 @@ import { parking } from "../axios.config";
 import { pinStyle } from "../utils/mapview.utils";
 import { AuthContext } from "../context/AuthContext";
 import { ParkingInformationScreenProps } from "../typescript/navigation/navigation.types";
+import { ThemeContext } from "../context/ThemeContext";
 
 const ParkingInformationScreen = ({
   navigation,
@@ -25,11 +26,11 @@ const ParkingInformationScreen = ({
   const [refresh, setRefresh] = useState<boolean>(false);
   const { parkings } = useSelector((state: RootState) => state.parking);
   const { userToken, userInfo } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const { parkingSelected, favoritesParking } = useSelector(
     (state: RootState) => state.parking
   );
-  let isFavorites =
-    favoritesParking.length > 0
+  let isFavorites = favoritesParking.length > 0
       ? favoritesParking.filter((el) => el.name === parkingSelected?.name)
       : [];
 
@@ -54,20 +55,20 @@ const ParkingInformationScreen = ({
     dispatch(addFavoritesParking(favoriteParking));
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container,theme.background]}>
       <View style={styles.header}>
         <Ionicons
           name="arrow-back-outline"
-          color="#ddd"
+          color={theme.primary.color}
           size={30}
           onPress={() => {
             navigation.goBack();
           }}
         />
       </View>
-      <Text style={[styles.text, styles.title]}>{parkingSelected?.name}</Text>
+      <Text style={[styles.text, styles.title,theme.primary]}>{parkingSelected?.name}</Text>
       <MapView
-        style={styles.map}
+        style={[styles.map,{borderWidth:1}]}
         provider="google"
         region={{
           latitude: parkingSelected?.latitude as number,
@@ -89,7 +90,7 @@ const ParkingInformationScreen = ({
           Places disponibles : {parkingSelected?.dispo}
         </Text>
         {parkingSelected?.distanceBetweenUserAndParking && (
-          <Text style={[styles.text, { color: "#2795FF" }]}>
+          <Text style={[styles.text, theme.secondary]}>
             À {parkingSelected?.distanceBetweenUserAndParking.toFixed(0)} km
           </Text>
         )}
@@ -107,16 +108,16 @@ const ParkingInformationScreen = ({
             )
           }
         >
-          <Icon name="directions" size={55} style={styles.iconFav_Heart} />
-          <Text style={styles.text}>Y aller</Text>
+          <Icon name="directions" size={55} style={[styles.iconFav_Heart,theme.secondary]} />
+          <Text style={[styles.text,theme.primary]}>Y aller</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.icon} onPress={() => updateFavorite()}>
           <Icon
             name={isFavorites.length === 0 ? "heart-plus" : "heart-minus"}
             size={50}
-            style={styles.iconFav_Heart}
+            style={[styles.iconFav_Heart,theme.secondary]}
           />
-          <Text style={styles.text}>
+          <Text style={[styles.text,theme.primary]}>
             {isFavorites.length === 0 ? "Ajouter" : "Retirer"}
           </Text>
         </TouchableOpacity>

@@ -4,15 +4,13 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#0B131D",
   },
   title: {
     fontSize: 23,
     marginBottom: 30,
     marginTop: 20,
   },
-  test: {
-    backgroundColor: "#000",
+  flatListContainer: {
     width: "100%",
   },
   header: {
@@ -21,7 +19,6 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
   },
   text: {
-    color: "#ddd",
     fontSize: 17,
   },
   icon: {
@@ -45,7 +42,6 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   iconFav_Heart: {
-    color: "#2795FF",
     marginBottom: 10,
   },
 });

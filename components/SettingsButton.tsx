@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { ThemeContext } from "../context/ThemeContext";
 
 interface SettingsButtonProps {
   label: string;
@@ -8,6 +9,7 @@ interface SettingsButtonProps {
   action?: any;
 }
 const SettingsButton = ({ label, icon, action }: SettingsButtonProps) => {
+  const { theme } = useContext(ThemeContext)
   return (
     <View style={{ maxWidth: "50%", marginBottom: 20 }}>
       <TouchableOpacity
@@ -15,7 +17,7 @@ const SettingsButton = ({ label, icon, action }: SettingsButtonProps) => {
         onPress={action}
       >
         {icon}
-        <Text style={{ color: "#ddd", fontSize: 22, fontWeight: "500" }}>
+        <Text style={[theme.primary,{ fontSize: 22, fontWeight: "500" }]}>
           {label}
         </Text>
       </TouchableOpacity>

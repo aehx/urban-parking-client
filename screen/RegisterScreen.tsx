@@ -6,6 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import { styles } from "../style/screen/RegisterScreen";
 import InputField from "../components/inputField";
 import { RegisterScreenProps } from "../typescript/navigation/navigation.types";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   const { signup,registerError } = useContext(AuthContext);
@@ -15,20 +16,20 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
     password: "",
     confirmPassword: "",
   });
+  const {theme} = useContext(ThemeContext)
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Urban Parkings</Text>
+    <SafeAreaView style={[styles.container,theme.background]}>
+      <Text style={[styles.title,theme.authColor.secondary]}>Urban Parkings</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.loginText}>Inscription</Text>
+        <Text style={[styles.loginText,theme.authColor.primary]}>Inscription</Text>
         <InputField
           label={"Nom d'utilisateur"}
           icon={
             <MaterialIcons
               name="alternate-email"
               size={20}
-              color="#666"
-              style={{ marginRight: 5 }}
+              style={[{ marginRight: 5},theme.authColor.tertiary]}
             />
           }
           keyboardType="email-address"
@@ -43,8 +44,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             <MaterialIcons
               name="alternate-email"
               size={20}
-              color="#666"
-              style={{ marginRight: 5 }}
+              style={[{ marginRight: 5},theme.authColor.tertiary]}
             />
           }
           keyboardType="email-address"
@@ -59,8 +59,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             <Ionicons
               name="ios-lock-closed-outline"
               size={20}
-              color="#666"
-              style={{ marginRight: 5 }}
+              style={[{ marginRight: 5},theme.authColor.tertiary]}
             />
           }
           inputType="password"
@@ -75,8 +74,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             <Ionicons
               name="ios-lock-closed-outline"
               size={20}
-              color="#666"
-              style={{ marginRight: 5 }}
+              style={[{ marginRight: 5},theme.authColor.tertiary]}
             />
           }
           inputType="password"
@@ -89,15 +87,15 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
       </View>
       <View style={styles.submitContainer}>
         <TouchableOpacity
-          style={styles.buttonSubmit}
+          style={[styles.buttonSubmit,theme.authColor.buttonBackground]}
           onPress={() => signup(user)}
         >
           <Text>S'inscrire</Text>
         </TouchableOpacity>
         <View style={styles.redirectButtonContainer}>
-          <Text style={styles.text}>Déjà inscrit ?</Text>
+          <Text style={[styles.text,theme.authColor.primary]}>Déjà inscrit ?</Text>
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={styles.textSignUp}>Connectez-vous ! </Text>
+            <Text style={theme.authColor.secondary}>Connectez-vous ! </Text>
           </TouchableOpacity>
         </View>
       </View>

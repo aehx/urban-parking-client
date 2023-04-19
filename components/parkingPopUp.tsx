@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { View, Text, Linking, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { styles } from "../style/component/parkingPopUp";
 import { addPopUpParking } from "../redux/reducers/parking";
 import { ParkingPopUpProps } from "../typescript/components/ParkingPopUp.types";
+import { ThemeContext } from "../context/ThemeContext";
 
 const ParkingPopUp = ({
   distanceBetweenUserAndParking,
@@ -12,12 +13,13 @@ const ParkingPopUp = ({
   dispo,
 }: ParkingPopUpProps) => {
   const dispatch = useDispatch();
+  const { theme } = useContext(ThemeContext)
   return (
-    <View style={styles.popUpContainer}>
+    <View style={[styles.popUpContainer,theme.popUp.primary]}>
       <Icon
         name="close-circle-outline"
         size={35}
-        style={styles.closeIcon}
+        style={[styles.closeIcon,theme.popUp.icon]}
         onPress={() => {
           dispatch(addPopUpParking(null));
         }}
@@ -32,14 +34,14 @@ const ParkingPopUp = ({
           )
         }
       >
-        <Icon name="directions" size={50} style={styles.directionIcon} />
-        <Text style={styles.text}>Y aller</Text>
+        <Icon name="directions" size={50} style={[styles.directionIcon,theme.secondary]} />
+        <Text style={[styles.text,theme.primary]}>Y aller</Text>
       </TouchableOpacity>
       <View style={styles.textContainer}>
-        <Text style={styles.text}>{name}</Text>
-        <Text style={styles.text}>Nombre de places : {dispo}</Text>
+        <Text style={[styles.text,theme.primary]}>{name}</Text>
+        <Text style={[styles.text,theme.primary]}>Nombre de places : {dispo}</Text>
         {distanceBetweenUserAndParking && (
-          <Text style={styles.text}>
+          <Text style={[styles.text,theme.secondary]}>
             À {distanceBetweenUserAndParking.toFixed(0)} Km
           </Text>
         )}

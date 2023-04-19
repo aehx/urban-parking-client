@@ -9,9 +9,11 @@ import { AuthContext } from "../context/AuthContext";
 import AppStack from "./AppStack";
 import { addParkings } from "../redux/reducers/parking";
 import { Parking } from "../typescript/parkingType/parking.type";
+import { ThemeContext } from "../context/ThemeContext";
 
 const AppNav = () => {
   const { userToken, isLoading } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const dispatch = useDispatch();
   useEffect(() => {
     parking.get("/").then((response: AxiosResponse<Parking[]>) => {
@@ -24,7 +26,7 @@ const AppNav = () => {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size={"large"} color="#2795FF" />
+        <ActivityIndicator size={"large"} color={theme.secondary.color} />
       </View>
     );
   }

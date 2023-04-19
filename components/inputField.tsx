@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import {inputStyles} from "../style/component/inputField"
 import {
   View,
   TextInput,
   KeyboardTypeOptions,
 } from "react-native";
+import { ThemeContext } from "../context/ThemeContext";
 
 interface inputFieldProps {
   label: string;
@@ -23,10 +24,11 @@ export default function InputField({
   onChangeText,
   value,
 }: inputFieldProps) {
+  const { theme } = useContext(ThemeContext)
   return (
     <View
       style={
-        inputStyles.container
+        [inputStyles.container,theme.authColor.inputBorder]
       }
     >
       {icon}
@@ -34,8 +36,8 @@ export default function InputField({
         <TextInput
           placeholder={label}
           keyboardType={keyboardType}
-          placeholderTextColor="#cccccc9c"
-          style={inputStyles.input}
+          placeholderTextColor={theme.authColor.primary.color}
+          style={[inputStyles.input,theme.authColor.primary]}
           secureTextEntry={true}
           value={value}
           onChangeText={onChangeText}
@@ -43,9 +45,9 @@ export default function InputField({
       ) : (
         <TextInput
           placeholder={label}
-          placeholderTextColor={"#cccccc9c"}
+          placeholderTextColor={theme.authColor.primary.color}
           keyboardType={keyboardType}
-          style={inputStyles.input}
+          style={[inputStyles.input,theme.authColor.primary]}
           value={value}
           onChangeText={onChangeText}
         />

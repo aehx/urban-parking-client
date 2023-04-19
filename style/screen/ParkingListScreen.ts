@@ -3,12 +3,10 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B131D",
     alignItems: "center",
     justifyContent: "center",
   },
-  test: {
-    backgroundColor: "#000",
+  flatListContainer: {
     width: "100%",
   },
   header: {

@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: "#0B131D",
     flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: 15,
@@ -19,13 +18,9 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    color: "#ddd",
     marginBottom: 10,
   },
   textBold: {
     fontWeight: "bold",
-  },
-  distance: {
-    color: "#2795FF",
   },
 });

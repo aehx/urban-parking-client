@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B131D",
     justifyContent: "space-evenly",
   },
   titleContainer: {
@@ -13,7 +12,6 @@ export const styles = StyleSheet.create({
     height: "40%",
   },
   title: {
-    color: "#ddd",
     fontSize: 40,
   },
   favoriteContainer: {
@@ -22,6 +20,5 @@ export const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
-    color: "#ddd",
   },
 });
